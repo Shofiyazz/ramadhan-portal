@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List Ramadhan</title>
+    <style>
+
+body{
+    background: linear-gradient(135deg, #0a3d41 0%, #124d51 50%, #1a5e61 100%);
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px 5px 10px;
+}
+.header-left{
+    font-size: 15px;
+    margin: 0;
+    color: white;  
+    margin-left: 6pxpx; 
+}
+
+.header-right {
+    display: flex;
+    font-size: 15px;
+    color: white; 
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 25px; 
+    font-size: 15px;
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 15px 5px 15px 5px;
+    cursor: pointer;
+    color: #666;
+    border-bottom: 3px solid transparent;
+    transition: 0.3s;
+    border-radius: 12px;
+}
+
+.app-container{
+    background-color: rgb(236, 244, 250);;
+    margin: 0 auto;
+    max-width: 1200px;
+    margin-bottom: 50px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    padding: 0 5px 10px 5px;
+    border-radius: 12px;
+}
+
+.tab.active {
+    background-color: #ffffff;
+    color: #114237;
+    font-weight: bold;
+    border-bottom: 3px solid #5eb083; 
+}
+
+.card {
+    background-color: #ffffff;
+    border: 1px solid #eef2f0;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #10473b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.hint-text {
+    font-size: 0.8rem;
+    color: #888;
+    font-style: italic;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #e0e0e0;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.shalat-name {
+    flex: 1; 
+    margin-left: 15px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.1s ease;
+}
+
+.shalat-name:hover {
+    color: #5eb083;
+}
+
+.custom-checkbox {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.custom-checkbox input {
+    opacity: 0; 
+    position: absolute;
+    padding: 12px 6px 12px 6px ;
+}
+
+.checkmark {
+    width: 24px;
+    height: 24px;
+    background-color: #f4f7f6;
+    border: 2px solid #ccc;
+    border-radius: 6px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+    margin-right: 12px;
+}
+
+.custom-checkbox input:checked + .checkmark {
+    background-color: #5eb083; 
+    border-color: #5eb083;
+}
+
+.custom-checkbox input:checked + .checkmark::after {
+    content: "✓";
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.progress-percent {
+    font-size: 20px;
+    font-weight: 800;
+    color: #114237;
+    margin-bottom: 10px;
+}
+
+.bar-bg {
+    width: 100%;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.arabic-text {
+    font-family: 'Amiri', 'Traditional Arabic', serif;
+    font-size: 20px;
+    text-align: center;
+    direction: rtl;
+    line-height: 2;
+    color: #222;
+    margin: 15px 0;
+}
+
+.latin-text {
+    font-size: 0.85rem;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+    
+.input-group label {
+    font-size: 15px;
+    font-weight: 500;
+    color: #393232;
+    margin-bottom: 6px;
+    margin-top: 8px;
+}
+
+.input-group input[type="number"] {
+    width: 100%;
+    padding: 12px 4px 12px 4px;
+    font-size: 16px;
+    color: #222;
+    background-color: #f8fcfb;
+    border: 1.5px solid #d1e0d9;
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-group input::placeholder {
+    color: #aaa;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.input-group input:focus {
+    border-color: #5eb083;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(94, 176, 131, 0.15);
+}
+
+.tab-pane { 
+    display: none;
+    grid-template-columns: 1.5fr 1fr; 
+    gap: 20px; 
+    animation: fadeIn 0.3s ease; 
+}
+
+.tab-pane.active { 
+    display: grid;
+}
+
+@keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(5px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+.right-panel { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px; 
+}
+
+.borderless, .borderless-item { 
+    border-bottom: none; 
+    padding-bottom: 0; 
+}
+
+.calendar { 
+    display: grid; 
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 20px; 
+    margin-top: 10px; 
+}
+
+.cal-day { 
+    background: #f4f7f6; 
+    border: 1px solid #e0e0e0; 
+    text-align: center; 
+    padding: 10px 0; 
+    border-radius: 6px; 
+    font-weight: bold; 
+    font-size: 15px; 
+    cursor: pointer; 
+    transition: 0.2s; 
+}
+
+.cal-day.done { 
+    background: #5eb083; 
+    color: white; 
+    border-color: #5eb083; 
+}
+
+.btn-save { 
+    width: 100%; 
+    padding: 15px; 
+    background-color: #5eb083; 
+    color: white; 
+    border: none;
+    border-radius: 12px; 
+    font-weight: 700; 
+    font-size: 15px; 
+    cursor: pointer; 
+    margin-bottom: 15px;
+}
+
+.btn-tasbih { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;  
+    width: 100%; 
+    padding: 8px;
+    background-color: #114237; 
+    color: white; 
+    text-decoration: none; 
+    border-radius: 8px; 
+    font-weight: 600; 
+    margin-top: 50px;
+    margin-left: -8px;
+}
+
+.progress-ring { 
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    background: rgb(228, 215, 215);
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.progress-ring-inner { 
+    width: 40px; 
+    height: 40px; 
+    background-color: #096652; 
+    border-radius: 50%; 
+}
+
+@media (max-width: 1200px) {
+    .tab-pane.active { grid-template-columns: 1fr; }
+    .header-right { flex-direction: column; align-items: flex-end; gap: 5px; }
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <h1><span style="font-size: 40px;">🌙 </span>Ramadhan<br>To-Do List</h1>
+        </div>
+        <div class="header-right">
+            <div class="header-text">
+                <p>Daily Progress: <span id="global-progress-txt">68</span>%</p>
+                <p>Tetap Semangat!</p> 
+            </div>
+            <div class="progress-ring">
+                <div class="progress-ring-inner"></div>
+            </div>
+        </div>
+    </header>
+    <div class="app-container">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('pane-shalat', this)">👤 Shalat Wajib</div>
+            <div class="tab" onclick="switchTab('pane-quran', this)">📖 Baca Qur'an</div>
+            <div class="tab" onclick="switchTab('pane-puasa', this)">🌙 Puasa</div>
+            <div class="tab" onclick="switchTab('pane-dzikir', this)">🤲 Dzikir</div>
+        </div>
+
+        <main>
+            <div id="pane-shalat" class="tab-pane active">
+                <div class="card">
+                    <div class="card-title">SHALAT WAJIB</div>
+                    <div class="hint-text"> Klik nama shalat untuk melihat niat</div>
+                    
+                    <div class="list-item">
+                        <label class="custom-checkbox"><input type="checkbox" checked><span class="checkmark"></span></label>
+                        <span class="shalat-name" onclick="tampilkanNiat('subuh')">Subuh</span>
+                        <span>04:29</span>
+                    </div>
+                    <div class="list-item">
+                        <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span></label>
+                        <span class="shalat-name" onclick="tampilkanNiat('dzuhur')">Dzuhur</span>
+                        <span>11:51</span>
+                    </div>
+                    <div class="list-item">
+                        <label class="custom-checkbox"><input type="checkbox" checked><span class="checkmark"></span></label>
+                        <span class="shalat-name" onclick="tampilkanNiat('ashar')">Ashar</span>
+                        <span>15:15</span>
+                    </div>
+                    <div class="list-item">
+                        <label class="custom-checkbox"><input type="checkbox" checked><span class="checkmark"></span></label>
+                        <span class="shalat-name" onclick="tampilkanNiat('maghrib')">Maghrib</span>
+                        <span>17:56</span>
+                    </div>
+                    <div class="list-item">
+                        <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span></label>
+                        <span class="shalat-name" onclick="tampilkanNiat('isya')">Isya</span>
+                        <span>19:10</span>
+                    </div>
+                </div>
+
+                <div class="right-panel">
+                    <div class="card">
+                        <div class="card-title">PROGRESS SHALAT</div>
+                        <div class="progress-percent">60%</div>
+                        <div class="bar-bg"><div class="bar-fill" style="width: 60%;"></div></div>
+                    </div>
+                    
+                    <div class="card" id="card-niat">
+                        <div class="card-title">BACAAN NIAT <span id="judul-niat">SUBUH</span></div>
+                        <div class="arabic-text" id="teks-arab">
+                            أُصَلِّي فَرْضَ الصُّبْحِ رَكْعَتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى
+                        </div>
+                        <div class="latin-text" id="teks-latin">
+                            Ushalli fardhash-shubhi rak'ataini mustaqbilal qiblati adaa'an lillaahi ta'aalaa.
+                        </div>
+                    </div>
+                    <button class="btn-save" onclick="alert('Progress Shalat Disimpan!')">SIMPAN SHALAT</button>
+                </div>
+            </div>
+
+            <div id="pane-quran" class="tab-pane">
+                <div class="card">
+                    <div class="card-title">TARGET HARI INI</div>
+                    <div class="input-group">
+                        <label>Target Halaman</label>
+                        <input type="number" placeholder="Contoh: 20">
+                    </div>
+                    <div class="input-group">
+                        <label>Sudah Dibaca</label>
+                        <input type="number" placeholder="Contoh: 15">
+                    </div>
+                    <div class="list-item borderless">
+                        <label class="custom-checkbox"><input type="checkbox"><span class="checkmark"></span> Tandai Selesai 100%</label>
+                    </div>
+                </div>
+
+                <div class="right-panel">
+                    <div class="card">
+                        <div class="card-title">PROGRESS QUR'AN</div>
+                        <div class="progress-percent">0%</div>
+                        <div class="bar-bg"><div class="bar-fill"></div></div>
+                    </div>
+                    <button class="btn-save" onclick="alert('Progress Quran Disimpan!')">SIMPAN QUR'AN</button>
+                </div>
+            </div>
+
+            <div id="pane-puasa" class="tab-pane">
+                <div class="card">
+                    <div class="card-title">KALENDER PUASA 30 HARI</div>
+                    <div class="hint-text"> Klik angka hari untuk mengisi status puasa</div>
+                    <div class="calendar" id="calendar-grid"></div>
+                </div>
+
+                <div class="right-panel">
+                    <div class="card">
+                        <div class="card-title">STATUS</div>
+                        <div class="list-item borderless-item">
+                            <label class="custom-checkbox">
+                                <input type="checkbox" id="chk-sahur" onchange="cekKondisiPuasa()">
+                                <span class="checkmark"></span> Sahur
+                            </label>
+                        </div>
+                        <div class="list-item borderless-item">
+                            <label class="custom-checkbox">
+                                <input type="checkbox" id="chk-berbuka" onchange="cekKondisiPuasa()">
+                                <span class="checkmark"></span> Berbuka
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">BACAAN NIAT & BERBUKA</div>
+                        <div class="niat-box">
+                            <div class="niat-title">🌙 Niat Puasa</div>
+                            <div class="arabic-text small-arab">نَوَيْتُ صَوْمَ غَدٍ عَنْ أَدَاءِ فَرْضِ شَهْرِ رَمَضَانَ هَذِهِ السَّنَةِ لِلّٰهِ تَعَالَى</div>
+                            <div class="latin-text small-latin">Nawaitu shauma ghadin 'an adaa'i fardhi syahri Ramadhaana haadzihis sanati lillaahi ta'aalaa.</div>
+                        </div>
+                        <div>
+                            <div class="niat-title">🤲 Doa Berbuka</div>
+                            <div class="arabic-text small-arab">اللَّهُمَّ لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ</div>
+                            <div class="latin-text small-latin">Allahumma laka shumtu wa 'alaa rizqika afthartu.</div>
+                        </div>
+                    </div>
+                    <button class="btn-save" onclick="alert('Progress Puasa Disimpan!')">SIMPAN PUASA</button>
+                </div>
+            </div>
+
+            <div id="pane-dzikir" class="tab-pane">
+                <div class="card">
+                    <div class="card-title">DZIKIR HARIAN</div>
+                    <div class="list-item">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" class="chk-dzikir" onchange="updateProgressDzikir()">
+                            <span class="checkmark"></span>  Dzikir Pagi
+                        </label>
+                    </div>
+                    <div class="list-item borderless">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" class="chk-dzikir" onchange="updateProgressDzikir()">
+                            <span class="checkmark"></span> Dzikir Petang
+                        </label>
+                    </div>
+
+                    <div class="tasbih-link-container">
+                        <a href="https://shofiyazz.github.io/doa-ramadhan/" target="_blank" class="btn-tasbih">
+                            <p>Buka Tasbih Digital</p>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="right-panel">
+                    <div class="card">
+                        <div class="card-title">PROGRESS DZIKIR</div>
+                        <div class="progress-stats">
+                            <div class="progress-percent" id="dzikir-percent">0%</div>
+                            <div class="progress-count"><span id="dzikir-count">0</span> / 2 Selesai</div>
+                        </div>
+                        <div class="bar-bg">
+                            <div class="bar-fill" id="dzikir-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">BACAAN DZIKIR UTAMA</div>
+                        <div class="arabic-text large-arab">
+                            سُبْحَانَ اللَّهِ، وَالْحَمْدُ لِلَّهِ، وَلَا إِلَهَ إِلَّا اللَّهُ، وَاللَّهُ أَكْبَرُ
+                        </div>
+                        <div class="latin-text">
+                            Subhanallah, walhamdulillah, wa laa ilaha illallah, wallahu akbar.
+                        </div>
+                    </div>
+                    <button class="btn-save" onclick="alert('Progress Dzikir Disimpan!')">SIMPAN DZIKIR</button>
+                </div>
+        </div>
+    </main>
+
+    <script>
+        
+    function switchTab(paneId, clickedTab) {
+    document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+    
+    document.getElementById(paneId).classList.add('active');
+    clickedTab.classList.add('active');
+}
+
+const dataNiat = {
+    subuh: { judul: "SUBUH", arab: "أُصَلِّي فَرْضَ الصُّبْحِ رَكْعَتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى", latin: "Ushalli fardhash-shubhi rak'ataini mustaqbilal qiblati adaa'an lillaahi ta'aalaa." },
+    dzuhur: { judul: "DZUHUR", arab: "أُصَلِّي فَرْضَ الظُّهْرِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى", latin: "Ushalli fardhazh-zhuhri arba'a raka'aatin mustaqbilal qiblati adaa'an lillaahi ta'aalaa." },
+    ashar: { judul: "ASHAR", arab: "أُصَلِّي فَرْضَ الْعَصْرِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى", latin: "Ushalli fardhal 'ashri arba'a raka'aatin mustaqbilal qiblati adaa'an lillaahi ta'aalaa." },
+    maghrib: { judul: "MAGHRIB", arab: "أُصَلِّي فَرْضَ الْمَغْرِبِ ثَلَاثَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى", latin: "Ushalli fardhal maghribi tsalaatsa raka'aatin mustaqbilal qiblati adaa'an lillaahi ta'aalaa." },
+    isya: { judul: "ISYA", arab: "أُصَلِّي فَرْضَ الْعِشَاءِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى", latin: "Ushalli fardhal 'ishaa'i arba'a raka'aatin mustaqbilal qiblati adaa'an lillaahi ta'aalaa." }
+};
+
+function tampilkanNiat(shalatKey) {
+    document.getElementById('judul-niat').innerText = dataNiat[shalatKey].judul;
+    document.getElementById('teks-arab').innerText = dataNiat[shalatKey].arab;
+    document.getElementById('teks-latin').innerText = dataNiat[shalatKey].latin;
+}
+
+const shalatChecks = document.querySelectorAll('#pane-shalat input[type="checkbox"]');
+function updateShalat() {
+    let checked = Array.from(shalatChecks).filter(c => c.checked).length;
+    let percent = (checked / 5) * 100;
+    
+    document.querySelector('#pane-shalat .progress-percent').innerText = percent + '%';
+    document.querySelector('#pane-shalat .bar-fill').style.width = percent + '%';
+    updateGlobalProgress();
+}
+shalatChecks.forEach(c => c.addEventListener('change', updateShalat));
+
+const quranInputs = document.querySelectorAll('#pane-quran input[type="number"]');
+const quranCheck = document.querySelector('#pane-quran input[type="checkbox"]');
+
+function updateQuran() {
+    let target = parseInt(quranInputs[0].value) || 0;
+    let read = parseInt(quranInputs[1].value) || 0;
+    
+    if (quranCheck.checked && target > 0) {
+        read = target;
+        quranInputs[1].value = target;
+    }
+    
+    let percent = target === 0 ? 0 : Math.min(100, Math.round((read / target) * 100));
+    quranCheck.checked = (read >= target && target > 0);
+    
+    document.querySelector('#pane-quran .progress-percent').innerText = percent + '%';
+    document.querySelector('#pane-quran .bar-fill').style.width = percent + '%';
+    updateGlobalProgress();
+}
+quranInputs.forEach(input => input.addEventListener('input', updateQuran));
+quranCheck.addEventListener('change', updateQuran);
+
+let dataPuasa = Array.from({length: 30}, () => ({ sahur: false, berbuka: false, puasa: false }));
+let hariIni = 1;
+
+function initKalender() {
+    const grid = document.getElementById('calendar-grid');
+    grid.innerHTML = '';
+    for(let i = 1; i <= 30; i++) {
+        let box = document.createElement('div');
+        box.className = 'cal-day';
+        box.id = 'cal-' + i;
+        box.innerText = i;
+        box.onclick = () => pilihHari(i);
+        grid.appendChild(box);
+    }
+    pilihHari(1);
+}
+
+function pilihHari(hari) {
+    hariIni = hari;
+    document.querySelectorAll('.cal-day').forEach(b => b.style.boxShadow = 'none');
+    document.getElementById('cal-' + hari).style.boxShadow = '0 0 0 2px #114237';
+    
+    let data = dataPuasa[hari - 1];
+    document.getElementById('chk-sahur').checked = data.sahur;
+    document.getElementById('chk-berbuka').checked = data.berbuka;
+}
+
+function cekKondisiPuasa() {
+    let sahur = document.getElementById('chk-sahur').checked;
+    let berbuka = document.getElementById('chk-berbuka').checked;
+    
+    dataPuasa[hariIni - 1].sahur = sahur;
+    dataPuasa[hariIni - 1].berbuka = berbuka;
+    
+    let isPuasaSelesai = sahur && berbuka;
+    dataPuasa[hariIni - 1].puasa = isPuasaSelesai;
+    
+    let box = document.getElementById('cal-' + hariIni);
+    if(isPuasaSelesai) {
+        box.classList.add('done');
+        box.innerText = '✓';
+    } else {
+        box.classList.remove('done');
+        box.innerText = hariIni;
+    }
+    updateGlobalProgress();
+}
+
+function updateProgressDzikir() {
+    const checks = document.querySelectorAll('.chk-dzikir');
+    let checked = Array.from(checks).filter(c => c.checked).length;
+    let percent = (checked / 2) * 100;
+    
+    document.getElementById('dzikir-count').innerText = checked;
+    document.getElementById('dzikir-percent').innerText = percent + '%';
+    document.getElementById('dzikir-bar').style.width = percent + '%';
+    updateGlobalProgress();
+}
+
+function updateGlobalProgress() {
+    let shalatStr = document.querySelector('#pane-shalat .progress-percent').innerText;
+    let quranStr = document.querySelector('#pane-quran .progress-percent').innerText;
+    let dzikirStr = document.getElementById('dzikir-percent').innerText;
+    
+    let shalat = parseInt(shalatStr.replace('%', '')) || 0;
+    let quran = parseInt(quranStr.replace('%', '')) || 0;
+    let dzikir = parseInt(dzikirStr.replace('%', '')) || 0;
+    
+    let puasaHariIni = dataPuasa[hariIni - 1].puasa ? 100 : 0;
+    
+    let global = Math.round((shalat + quran + puasaHariIni + dzikir) / 4);
+    
+    document.getElementById('global-progress-txt').innerText = global;
+    
+    let ring = document.querySelector('.progress-ring');
+    if (ring) {
+        ring.style.background = `conic-gradient(#5eb083 ${global}%, rgba(255,255,255,0.2) 0)`;
+    }
+}
+
+window.onload = () => {
+    initKalender();
+    updateShalat();
+    updateQuran();
+    updateProgressDzikir();
+};
+    </script>
+    </body>
+</html>
