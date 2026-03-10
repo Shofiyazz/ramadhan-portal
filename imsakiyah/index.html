@@ -207,13 +207,13 @@ footer{
         const tabel = document.getElementById('isi-tabel')
         const jadwal = document.getElementById('tabel-jadwal')
 
-        const tampilkanTanggalHariIni = function(){
+        const tampilkanTanggalHariIni = () => {
             const waktuSekarang = new Date();
             const opsiFormat = { weekday: 'long', day: 'numeric', month: 'long', year:'numeric'};
             infoTanggal.textContent = waktuSekarang.toLocaleDateString('id-ID', opsiFormat);
         };
 
-        const tanggalHariIni = function(){
+        const tanggalHariIni = () => {
             const now = new Date();
             const year = now.getFullYear();
             const month = String(now.getMonth() + 1).padStart(2, '0');
